@@ -1,5 +1,5 @@
 import socket, time
-from config import DELAY, CHANNEL, ALERT_SOUND, ALERT_RUMBLE
+from config import DELAY, CHANNEL, ALERT_SOUND, ALERT_RUMBLE, SOUND_FILE
 from alerts import sound, rumble
 from common import window
 
@@ -32,7 +32,9 @@ try:
             elif len(resp) > 0:
                 parseChat(resp)
                 if not window.foreground() and time.time() - lastAlert > DELAY:
-                    if ALERT_SOUND: sound.alert()
+                    if ALERT_SOUND: 
+                        sound.alert()
+                        print(SOUND_FILE)
                     if ALERT_RUMBLE: rumble.alert()
                     lastAlert = time.time()
         
