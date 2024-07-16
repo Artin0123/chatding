@@ -1,8 +1,10 @@
+import os
+
 # Your twitch channel preceded by a hash
-CHANNEL = '#sheuronazxe'
+CHANNEL = '#artin0123'
 
 # Wait x seconds to play alert again on new chat message
-DELAY = 120
+DELAY = 2
 
 ### Enable (True) / Disable (False) alert modules
 # ALERT_SOUND plays audible alarm on default sound device
@@ -10,5 +12,6 @@ DELAY = 120
 ALERT_SOUND = True
 ALERT_RUMBLE = False
 
-# Alert sound file in WAV format
-SOUND_FILE = 'sounds/alert.wav'
+# 假設 config.py 與 chatding.py 在同一目錄下
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SOUND_FILE = os.path.join(BASE_DIR, 'sounds', 'alert2.wav')
