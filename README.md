@@ -8,7 +8,9 @@ _A simple chat notifier for Twitch streamers without viewers_
 
 ### Set-up
 
-Download/clone this repo and run dist/chatding.exe or run chatding.py
+Download/clone this repo and run dist/chatding.exe or run chatding.py  
+
+make sure it work when launch first time.
 
 ### Behavior
 

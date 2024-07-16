@@ -5,7 +5,7 @@ import sys
 CHANNEL = '#artin0123'
 
 # Wait x seconds to play alert again on new chat message
-DELAY = 2
+DELAY = 0.5
 
 ### Enable (True) / Disable (False) alert modules
 # ALERT_SOUND plays audible alarm on default sound device
