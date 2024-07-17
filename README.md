@@ -12,6 +12,8 @@ make sure it work when launch first time.
 
 ### Set-up
 
+channel name will saved in channel_name.txt
+
 _Edit file config.py_
 
 ```
