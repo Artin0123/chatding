@@ -38,8 +38,6 @@
   ('calendar',
    'C:\\Users\\artin\\AppData\\Local\\Programs\\Python\\Python310\\lib\\calendar.py',
    'PYMODULE'),
-  ('common', '-', 'PYMODULE'),
-  ('common.window', 'C:\\Files\\chatding\\common\\window.py', 'PYMODULE'),
   ('config', 'C:\\Files\\chatding\\config.py', 'PYMODULE'),
   ('contextlib',
    'C:\\Users\\artin\\AppData\\Local\\Programs\\Python\\Python310\\lib\\contextlib.py',

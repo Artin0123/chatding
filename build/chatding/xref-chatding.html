@@ -27,10 +27,9 @@ imports:
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#collections">collections</a>
  &#8226;   <a href="#collections.abc">collections.abc</a>
- &#8226;   <a href="#common">common</a>
- &#8226;   <a href="#common.window">common.window</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#copyreg">copyreg</a>
+ &#8226;   <a href="#ctypes">ctypes</a>
  &#8226;   <a href="#encodings">encodings</a>
  &#8226;   <a href="#encodings.aliases">encodings.aliases</a>
  &#8226;   <a href="#encodings.ascii">encodings.ascii</a>
@@ -1460,43 +1459,6 @@ imported by:
 </div>
 
 <div class="node">
-  <a name="common"></a>
-  <a target="code" href="-" type="text/plain"><tt>common</tt></a>
-<span class="moduletype">NamespacePackage</span>  <div class="import">
-imports:
-    <a href="#common.window">common.window</a>
-
-  </div>
-  <div class="import">
-imported by:
-    <a href="#chatding.py">chatding.py</a>
- &#8226;   <a href="#common.window">common.window</a>
-
-  </div>
-
-</div>
-
-<div class="node">
-  <a name="common.window"></a>
-  <a target="code" href="///C:/Files/chatding/common/window.py" type="text/plain"><tt>common.window</tt></a>
-<span class="moduletype">SourceModule</span>  <div class="import">
-imports:
-    <a href="#common">common</a>
- &#8226;   <a href="#ctypes">ctypes</a>
- &#8226;   <a href="#os">os</a>
- &#8226;   <a href="#sys">sys</a>
-
-  </div>
-  <div class="import">
-imported by:
-    <a href="#chatding.py">chatding.py</a>
- &#8226;   <a href="#common">common</a>
-
-  </div>
-
-</div>
-
-<div class="node">
   <a name="config"></a>
   <a target="code" href="///C:/Files/chatding/config.py" type="text/plain"><tt>config</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -1640,7 +1602,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#alerts.rumble">alerts.rumble</a>
- &#8226;   <a href="#common.window">common.window</a>
+ &#8226;   <a href="#chatding.py">chatding.py</a>
  &#8226;   <a href="#ctypes._endian">ctypes._endian</a>
 
   </div>
@@ -5658,28 +5620,9 @@ imports:
   <div class="import">
 imported by:
     <a href="#chatding.py">chatding.py</a>
- &#8226;   <a href="#ntpath">ntpath</a>
  &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#os.path">os.path</a>
  &#8226;   <a href="#pathlib">pathlib</a>
-
-  </div>
-
-</div>
-
-<div class="node">
-  <a name="ntpath"></a>
-  <a target="code" href="" type="text/plain"><tt>ntpath</tt></a>
-<span class="moduletype">AliasNode</span>  <div class="import">
-imports:
-    <a href="#ntpath">ntpath</a>
- &#8226;   <a href="#os">os</a>
-
-  </div>
-  <div class="import">
-imported by:
-    <a href="#os">os</a>
- &#8226;   <a href="#py_compile">py_compile</a>
- &#8226;   <a href="#tracemalloc">tracemalloc</a>
 
   </div>
 
@@ -5788,7 +5731,7 @@ imports:
  &#8226;   <a href="#io">io</a>
  &#8226;   <a href="#nt">nt</a>
  &#8226;   <a href="#ntpath">ntpath</a>
- &#8226;   <a href="#ntpath">ntpath</a>
+ &#8226;   <a href="#os.path">os.path</a>
  &#8226;   <a href="#posix">posix</a>
  &#8226;   <a href="#posixpath">posixpath</a>
  &#8226;   <a href="#stat">stat</a>
@@ -5803,7 +5746,6 @@ imported by:
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#bz2">bz2</a>
  &#8226;   <a href="#chatding.py">chatding.py</a>
- &#8226;   <a href="#common.window">common.window</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#ctypes">ctypes</a>
  &#8226;   <a href="#email.utils">email.utils</a>
@@ -5819,8 +5761,8 @@ imported by:
  &#8226;   <a href="#logging">logging</a>
  &#8226;   <a href="#lzma">lzma</a>
  &#8226;   <a href="#ntpath">ntpath</a>
- &#8226;   <a href="#ntpath">ntpath</a>
  &#8226;   <a href="#optparse">optparse</a>
+ &#8226;   <a href="#os.path">os.path</a>
  &#8226;   <a href="#pathlib">pathlib</a>
  &#8226;   <a href="#posixpath">posixpath</a>
  &#8226;   <a href="#py_compile">py_compile</a>
@@ -5833,6 +5775,25 @@ imported by:
  &#8226;   <a href="#threading">threading</a>
  &#8226;   <a href="#uu">uu</a>
  &#8226;   <a href="#zipfile">zipfile</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="os.path"></a>
+  <a target="code" href="" type="text/plain"><tt>os.path</tt></a>
+<span class="moduletype">AliasNode</span>  <div class="import">
+imports:
+    <a href="#ntpath">ntpath</a>
+ &#8226;   <a href="#os">os</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#os">os</a>
+ &#8226;   <a href="#py_compile">py_compile</a>
+ &#8226;   <a href="#tracemalloc">tracemalloc</a>
 
   </div>
 
@@ -6002,8 +5963,8 @@ imports:
  &#8226;   <a href="#importlib._bootstrap_external">importlib._bootstrap_external</a>
  &#8226;   <a href="#importlib.machinery">importlib.machinery</a>
  &#8226;   <a href="#importlib.util">importlib.util</a>
- &#8226;   <a href="#ntpath">ntpath</a>
  &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#os.path">os.path</a>
  &#8226;   <a href="#sys">sys</a>
  &#8226;   <a href="#traceback">traceback</a>
 
@@ -6478,7 +6439,6 @@ imported by:
  &#8226;   <a href="#calendar">calendar</a>
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#collections">collections</a>
- &#8226;   <a href="#common.window">common.window</a>
  &#8226;   <a href="#config">config</a>
  &#8226;   <a href="#contextlib">contextlib</a>
  &#8226;   <a href="#ctypes">ctypes</a>
@@ -6722,7 +6682,7 @@ imports:
  &#8226;   <a href="#fnmatch">fnmatch</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#linecache">linecache</a>
- &#8226;   <a href="#ntpath">ntpath</a>
+ &#8226;   <a href="#os.path">os.path</a>
  &#8226;   <a href="#pickle">pickle</a>
 
   </div>
