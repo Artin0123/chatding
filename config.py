@@ -1,16 +1,16 @@
+# pyinstaller -F .\chatding.py
+# pyinstaller -F -w -n open_chatding .\open_chading.py
+
 import os
 import sys
 
-# Your twitch channel preceded by a hash
-CHANNEL = '#artin0123'
-
-# Wait x seconds to play alert again on new chat message
-DELAY = 0
+# Wait x seconds to play alert on new chat message
+DELAY = 10
 
 ### Enable (True) / Disable (False) alert modules
 # ALERT_SOUND plays audible alarm on default sound device
 # ALERT_RUMBLE activate rumble on XBOX compatible controller, more settings in rumble.py
-ALERT_SOUND = False
+ALERT_SOUND = True
 ALERT_RUMBLE = False
 
 # 假設 config.py 與 chatding.py 在同一目錄下

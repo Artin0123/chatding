@@ -1,10 +1,11 @@
+# pyinstaller -F .\chatding.py
+
 import socket
 import time
 import os
 import ctypes
 from config import (
     DELAY,
-    CHANNEL,
     ALERT_SOUND,
     ALERT_RUMBLE,
     BASE_DIR,
@@ -47,9 +48,9 @@ sock.send(f"NICK justinfan0\n".encode('utf-8'))
 sock.send(f"JOIN {CHANNEL}\n".encode("utf-8"))
 sock.setblocking(0)  # 設置 socket 為非阻塞模式
 
-lastAlert = 0
+last_background_time = 0
 hwnd = kernel32.GetConsoleWindow()
-
+sound_alerted = False
 
 def is_window_visible_and_foreground(hwnd):
     return user32.IsWindowVisible(hwnd) and user32.GetForegroundWindow() == hwnd
@@ -80,14 +81,18 @@ try:
 
             elif len(resp) > 0:
                 parseChat(resp)
-                if time.time() - lastAlert > DELAY:
-                    if ALERT_SOUND:
+                if not is_window_visible_and_foreground(hwnd):
+                    set_taskbar_icon(hwnd, icon2)
+                    if (
+                        ALERT_SOUND
+                        and not sound_alerted
+                        and time.time() - last_background_time > DELAY
+                    ):
                         sound.alert()
+                        sound_alerted = True
                     if ALERT_RUMBLE:
                         rumble.alert()
-                    if not is_window_visible_and_foreground(hwnd):
-                        set_taskbar_icon(hwnd, icon2)
-                    lastAlert = time.time()
+                    last_background_time = time.time()
 
         except BlockingIOError:
             # 當沒有數據可讀時，捕獲 BlockingIOError 並繼續迴圈
@@ -96,6 +101,7 @@ try:
         # 檢查窗口狀態並更新圖示
         if is_window_visible_and_foreground(hwnd):
             set_taskbar_icon(hwnd, icon1)
+            sound_alerted = False
 
         time.sleep(0.3)  # 每0.3秒檢查一次
         pass

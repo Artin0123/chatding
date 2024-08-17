@@ -17,10 +17,10 @@ channel name will saved in channel_name.txt
 _Edit file config.py_
 
 ```
-# Your twitch channel preceded by a hash
-CHANNEL = '#sheuronazxe'
+# pyinstaller -F .\chatding.py
+# pyinstaller -F -w -n open_chatding .\open_chading.py
 
-# Wait x seconds to play alert again on new chat message
+# Wait x seconds to play alert on new chat message
 DELAY = 120
 
 ### Enable (True) / Disable (False) alert modules
