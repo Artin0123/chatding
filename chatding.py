@@ -1,11 +1,8 @@
-# pyinstaller -F .\chatding.py
-
 import socket
 import time
 import os
 import ctypes
 from config import (
-    DELAY,
     ALERT_SOUND,
     ALERT_RUMBLE,
     BASE_DIR,
@@ -24,9 +21,7 @@ kernel32 = ctypes.windll.kernel32
 icon1 = user32.LoadImageW(None, ICON_FILE, 1, 0, 0, 0x00000010)
 icon2 = user32.LoadImageW(None, ICON_FILE2, 1, 0, 0, 0x00000010)
 
-# 假設 BASE_DIR 已經在 config.py 中定義
 channel_file_path = os.path.join(BASE_DIR, "channel_name.txt")
-
 # 檢查 channel_name.txt 檔案是否存在
 if not os.path.exists(channel_file_path):
     print("First time setting")
@@ -48,7 +43,6 @@ sock.send(f"NICK justinfan0\n".encode('utf-8'))
 sock.send(f"JOIN {CHANNEL}\n".encode("utf-8"))
 sock.setblocking(0)  # 設置 socket 為非阻塞模式
 
-last_background_time = 0
 hwnd = kernel32.GetConsoleWindow()
 sound_alerted = False
 
@@ -83,16 +77,11 @@ try:
                 parseChat(resp)
                 if not is_window_visible_and_foreground(hwnd):
                     set_taskbar_icon(hwnd, icon2)
-                    if (
-                        ALERT_SOUND
-                        and not sound_alerted
-                        and time.time() - last_background_time > DELAY
-                    ):
+                    if ALERT_SOUND and not sound_alerted:
                         sound.alert()
                         sound_alerted = True
                     if ALERT_RUMBLE:
                         rumble.alert()
-                    last_background_time = time.time()
 
         except BlockingIOError:
             # 當沒有數據可讀時，捕獲 BlockingIOError 並繼續迴圈

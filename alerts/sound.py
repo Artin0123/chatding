@@ -13,7 +13,7 @@ def alert():
 
     elif "win" in platform:
         import winsound
-        winsound.PlaySound(SOUND_FILE, winsound.SND_FILENAME | winsound.SND_ASYNC)
+        winsound.PlaySound(SOUND_FILE, winsound.SND_FILENAME)
 
     else:
         raise Exception('ERROR: Unsupported platform to play audio. Edit config.py and disable audio.')

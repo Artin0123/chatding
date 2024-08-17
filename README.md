@@ -20,9 +20,6 @@ _Edit file config.py_
 # pyinstaller -F .\chatding.py
 # pyinstaller -F -w -n open_chatding .\open_chading.py
 
-# Wait x seconds to play alert on new chat message
-DELAY = 120
-
 ### Enable (True) / Disable (False) alert modules
 # ALERT_SOUND plays audible alarm on default sound device
 # ALERT_RUMBLE activate rumble on XBOX compatible controller, more settings in rumble.py
