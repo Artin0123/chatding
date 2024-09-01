@@ -1,5 +1,5 @@
 # pyinstaller -F .\chatding.py
-# pyinstaller -F -w -n open_chatding .\open_chading.py
+# pyinstaller -F -w -n chatding! .\chatding!.py
 
 import os
 import sys

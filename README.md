@@ -12,13 +12,13 @@ make sure it work when launch first time.
 
 ### Set-up
 
-channel name will saved in channel_name.txt
+**需要安裝pyinstaller轉成exe或自行尋找其他方法讓視窗更改icon**
 
 _Edit file config.py_
 
 ```
-# pyinstaller -F .\chatding.py
-# pyinstaller -F -w -n open_chatding .\open_chading.py
+# Your twitch channel name
+CHANNEL = "artin0123"
 
 ### Enable (True) / Disable (False) alert modules
 # ALERT_SOUND plays audible alarm on default sound device
@@ -26,13 +26,21 @@ _Edit file config.py_
 ALERT_SOUND = True
 ALERT_RUMBLE = False
 
-# Alert sound file in WAV format
-SOUND_FILE = 'sounds/alert.wav'
+SOUND_FILE = os.path.join(BASE_DIR, "sounds", "alert2.wav")
+
+ICON_FILE = os.path.join(BASE_DIR, "icons", "icon1.ico")
+ICON_FILE2 = os.path.join(BASE_DIR, "icons", "icon2.ico")
+```
+更改完config後，終端機執行以下程式碼
+```
+pyinstaller -F .\chatding.py
+pyinstaller -F -w -n chatding! .\chatding!.py
 ```
 
+之後執行 dist/chatding!.exe 或建立其捷徑
 
 ### Behavior
 
-**chatding** plays the alert when it detects a new message in the chat and waits the number of seconds specified in the DELAY variable for a new alert.
+**chatding** plays the alert when it detects a new message in the chat.
 
 If the chatding window is in foreground no sound will be played (this feature only works on Windows platform).
