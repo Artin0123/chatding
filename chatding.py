@@ -1,11 +1,12 @@
-import socket
+import websocket
+import threading
 import time
-import os
+import re
 import ctypes
 from config import (
+    CHANNEL,
     ALERT_SOUND,
     ALERT_RUMBLE,
-    BASE_DIR,
     ICON_FILE,
     ICON_FILE2,
 )
@@ -17,84 +18,108 @@ ICON_BIG = 1
 WM_SETICON = 0x0080
 user32 = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
-# Load icons
-icon1 = user32.LoadImageW(None, ICON_FILE, 1, 0, 0, 0x00000010)
-icon2 = user32.LoadImageW(None, ICON_FILE2, 1, 0, 0, 0x00000010)
-
-channel_file_path = os.path.join(BASE_DIR, "channel_name.txt")
-# 檢查 channel_name.txt 檔案是否存在
-if not os.path.exists(channel_file_path):
-    print("First time setting")
-    # 如果檔案不存在，提示用戶輸入頻道名稱
-    channel_name = input("Input Twitch channel name: ")
-    # 將頻道名稱寫入檔案
-    with open(channel_file_path, "w") as file:
-        file.write(channel_name)
-    # 更新 CHANNEL 變數
-    CHANNEL = "#" + channel_name
-else:
-    # 如果檔案存在，從檔案讀取頻道名稱
-    with open(channel_file_path, "r") as file:
-        CHANNEL = "#" + file.read().strip()
-
-sock = socket.socket()
-sock.connect(("irc.chat.twitch.tv", 6667))
-sock.send(f"NICK justinfan0\n".encode('utf-8'))
-sock.send(f"JOIN {CHANNEL}\n".encode("utf-8"))
-sock.setblocking(0)  # 設置 socket 為非阻塞模式
-
-hwnd = kernel32.GetConsoleWindow()
-sound_alerted = False
-
-def is_window_visible_and_foreground(hwnd):
-    return user32.IsWindowVisible(hwnd) and user32.GetForegroundWindow() == hwnd
 
 
-def set_taskbar_icon(hwnd, icon):
-    user32.SendMessageW(hwnd, WM_SETICON, ICON_SMALL, icon)
-    user32.SendMessageW(hwnd, WM_SETICON, ICON_BIG, icon)
+class AnonymousTwitchChatReader:
+    def __init__(
+        self,
+        channel,
+        hwnd,
+        icon1,
+        icon2,
+        sound,
+        rumble,
+    ):
+        self.ws = None
+        self.channel = channel.lower()
+        self.hwnd = hwnd
+        self.icon1 = icon1
+        self.icon2 = icon2
+        self.sound = sound
+        self.rumble = rumble
+        self.alert_sound = ALERT_SOUND
+        self.alert_rumble = ALERT_RUMBLE
+        self.sound_alerted = False
+
+    def connect(self):
+        self.ws = websocket.WebSocketApp(
+            "wss://irc-ws.chat.twitch.tv:443",
+            on_open=self.on_open,
+            on_message=self.on_message,
+            on_error=self.on_error,
+            on_close=self.on_close,
+        )
+        wst = threading.Thread(target=self.ws.run_forever)
+        wst.daemon = True
+        wst.start()
+        self.set_taskbar_icon(self.icon1)
+
+    def on_open(self, ws):
+        print(f"Connected to #{self.channel}")
+        self.ws.send(f"NICK justinfan12345")  # Use a random username
+        self.ws.send(f"JOIN #{self.channel}")
+        self.ws.send("CAP REQ :twitch.tv/tags twitch.tv/commands")
+
+    def on_message(self, ws, message):
+        if message.startswith("PING"):
+            self.ws.send("PONG :tmi.twitch.tv")
+        elif "PRIVMSG" in message:
+            self.parse_message(message)
+            self.update_taskbar_icon()
+
+    def on_error(self, ws, error):
+        print(f"Error: {error}")
+
+    def on_close(self, ws, close_status_code, close_msg):
+        print("Connection closed")
+
+    def parse_message(self, message):
+        username_match = re.search(r"display-name=(\w+)", message)
+        content_match = re.search(r"PRIVMSG.*:(.+)", message)
+
+        if username_match and content_match:
+            username = username_match.group(1)
+            content = content_match.group(1)
+            print(f"{username}: {content}")
+
+    def is_window_visible_and_foreground(self):
+        return (
+            user32.IsWindowVisible(self.hwnd)
+            and user32.GetForegroundWindow() == self.hwnd
+        )
+
+    def set_taskbar_icon(self, icon):
+        user32.SendMessageW(self.hwnd, WM_SETICON, ICON_SMALL, icon)
+        user32.SendMessageW(self.hwnd, WM_SETICON, ICON_BIG, icon)
+
+    def update_taskbar_icon(self):
+        if not self.is_window_visible_and_foreground():
+            self.set_taskbar_icon(self.icon2)
+            if self.alert_sound and not self.sound_alerted:
+                self.sound.alert()
+                self.sound_alerted = True
+            if self.alert_rumble:
+                self.rumble.alert()
+
+    def disconnect(self):
+        if self.ws:
+            self.ws.close()
 
 
-def parseChat(resp):
-    resp = resp.rstrip().split("\r\n")
+if __name__ == "__main__":
+    HWND = kernel32.GetConsoleWindow()
+    ICON1 = user32.LoadImageW(None, ICON_FILE, 1, 0, 0, 0x00000010)
+    ICON2 = user32.LoadImageW(None, ICON_FILE2, 1, 0, 0, 0x00000010)
 
-    for line in resp:
-        if "PRIVMSG" in line:
-            user = line.split(":")[1].split("!")[0]
-            msg = line.split(":", maxsplit=2)[2]
-            line = user + ": " + msg
-        print(line)
+    reader = AnonymousTwitchChatReader(CHANNEL, HWND, ICON1, ICON2, sound, rumble)
+    reader.connect()
 
-try:
-    while True:
-        try:
-            resp = sock.recv(2048).decode("utf-8")
-
-            if resp.startswith('PING'):
-                sock.send("PONG\n".encode("utf-8"))
-
-            elif len(resp) > 0:
-                parseChat(resp)
-                if not is_window_visible_and_foreground(hwnd):
-                    set_taskbar_icon(hwnd, icon2)
-                    if ALERT_SOUND and not sound_alerted:
-                        sound.alert()
-                        sound_alerted = True
-                    if ALERT_RUMBLE:
-                        rumble.alert()
-
-        except BlockingIOError:
-            # 當沒有數據可讀時，捕獲 BlockingIOError 並繼續迴圈
-            pass
-
-        # 檢查窗口狀態並更新圖示
-        if is_window_visible_and_foreground(hwnd):
-            set_taskbar_icon(hwnd, icon1)
-            sound_alerted = False
-
-        time.sleep(0.3)  # 每0.3秒檢查一次
-        pass
-
-except KeyboardInterrupt:
-    print("exit")
-    sock.close()
+    try:
+        while True:
+            if reader.is_window_visible_and_foreground():
+                reader.set_taskbar_icon(ICON1)
+                reader.sound_alerted = False
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        print("Disconnecting...")
+        reader.disconnect()
