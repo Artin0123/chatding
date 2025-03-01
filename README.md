@@ -12,7 +12,8 @@ make sure it work when launch first time.
 
 ### Set-up
 
-**需要安裝pyinstaller轉成exe或自行尋找其他方法讓視窗更改icon**
+
+使用git clone取得此repo，再使用venv的pyinstaller更改config.py
 
 _Edit file config.py_
 
@@ -31,13 +32,16 @@ SOUND_FILE = os.path.join(BASE_DIR, "sounds", "alert2.wav")
 ICON_FILE = os.path.join(BASE_DIR, "icons", "icon1.ico")
 ICON_FILE2 = os.path.join(BASE_DIR, "icons", "icon2.ico")
 ```
-更改完config後，終端機執行以下程式碼
+更改完config後，終端機執行以下程式碼 (假設環境為PowerShell)
+
+chatding!的作用在於建立chatding!.exe的捷徑後，不需在dist路徑下開啟，也可以釘選到開始 (chatding.exe的捷徑無法更改工作列圖示)
 ```
+.\.venv\Scripts\Activate.ps1
 pyinstaller -F .\chatding.py
 pyinstaller -F -w -n chatding! .\chatding!.py
+deactivate
 ```
-
-之後執行 dist/chatding!.exe 或建立其捷徑
+之後執行 chatding!.exe 或 它的捷徑
 
 ### Behavior
 
